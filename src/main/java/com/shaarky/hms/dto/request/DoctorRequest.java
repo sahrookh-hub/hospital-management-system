@@ -63,7 +63,11 @@ public class DoctorRequest {
     private Integer yearsOfExperience;
 
     @NotNull(message = "Consultation fee is required.")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Consultation fee must be greater than zero.")
+    @DecimalMin(
+            value = "0.0",
+            inclusive = false,
+            message = "Consultation fee must be greater than zero."
+    )
     private Double consultationFee;
 
     @Size(max = 20, message = "Room number must not exceed 20 characters.")
@@ -74,4 +78,7 @@ public class DoctorRequest {
 
     @NotNull(message = "Department ID is required.")
     private Long departmentId;
+
+    @NotNull(message = "User ID is required.")
+    private Long userId;
 }

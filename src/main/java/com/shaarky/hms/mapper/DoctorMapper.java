@@ -4,12 +4,17 @@ import com.shaarky.hms.dto.request.DoctorRequest;
 import com.shaarky.hms.dto.response.DoctorResponse;
 import com.shaarky.hms.entity.Department;
 import com.shaarky.hms.entity.Doctor;
+import com.shaarky.hms.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DoctorMapper {
 
-    public Doctor toEntity(DoctorRequest request, Department department) {
+    public Doctor toEntity(
+            DoctorRequest request,
+            Department department,
+            User user
+    ) {
         if (request == null) {
             return null;
         }
@@ -30,6 +35,7 @@ public class DoctorMapper {
                 .build();
 
         doctor.assignDepartment(department);
+        doctor.assignUser(user);
 
         return doctor;
     }
@@ -68,12 +74,27 @@ public class DoctorMapper {
                                 ? doctor.getDepartment().getName()
                                 : null
                 )
+                .userId(
+                        doctor.getUser() != null
+                                ? doctor.getUser().getId()
+                                : null
+                )
+                .userEmail(
+                        doctor.getUser() != null
+                                ? doctor.getUser().getEmail()
+                                : null
+                )
                 .createdAt(doctor.getCreatedAt())
                 .updatedAt(doctor.getUpdatedAt())
                 .build();
     }
 
-    public void updateEntity(Doctor doctor, DoctorRequest request, Department department) {
+    public void updateEntity(
+            Doctor doctor,
+            DoctorRequest request,
+            Department department,
+            User user
+    ) {
         doctor.setEmployeeId(request.getEmployeeId());
         doctor.setFirstName(request.getFirstName());
         doctor.setLastName(request.getLastName());
@@ -86,6 +107,8 @@ public class DoctorMapper {
         doctor.setConsultationFee(request.getConsultationFee());
         doctor.setRoomNumber(request.getRoomNumber());
         doctor.setAvailable(request.getAvailable());
+
         doctor.assignDepartment(department);
+        doctor.assignUser(user);
     }
 }

@@ -48,6 +48,10 @@ public class DoctorResponse {
 
     private String departmentName;
 
+    private Long userId;
+
+    private String userEmail;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

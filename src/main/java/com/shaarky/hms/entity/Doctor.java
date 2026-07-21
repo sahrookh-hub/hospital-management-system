@@ -23,6 +23,7 @@ import lombok.Setter;
                 @Index(name = "idx_doctor_employee_id", columnList = "employee_id", unique = true),
                 @Index(name = "idx_doctor_license_number", columnList = "license_number", unique = true),
                 @Index(name = "idx_doctor_department", columnList = "department_id"),
+                @Index(name = "idx_doctor_user", columnList = "user_id", unique = true),
                 @Index(name = "idx_doctor_email", columnList = "email", unique = true),
                 @Index(name = "idx_doctor_phone_number", columnList = "phone_number")
         }
@@ -80,8 +81,22 @@ public class Doctor extends BaseEntity {
     @Setter(AccessLevel.NONE)
     private Department department;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "user_id",
+            nullable = false,
+            unique = true,
+            foreignKey = @ForeignKey(name = "fk_doctor_user")
+    )
+    @Setter(AccessLevel.NONE)
+    private User user;
+
     public void assignDepartment(Department department) {
         this.department = department;
+    }
+
+    public void assignUser(User user) {
+        this.user = user;
     }
 
     public String getFullName() {

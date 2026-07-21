@@ -4,11 +4,13 @@ import com.shaarky.hms.dto.request.DoctorRequest;
 import com.shaarky.hms.dto.response.DoctorResponse;
 import com.shaarky.hms.entity.Department;
 import com.shaarky.hms.entity.Doctor;
+import com.shaarky.hms.entity.User;
 import com.shaarky.hms.exception.DuplicateResourceException;
 import com.shaarky.hms.exception.ResourceNotFoundException;
 import com.shaarky.hms.mapper.DoctorMapper;
 import com.shaarky.hms.repository.DepartmentRepository;
 import com.shaarky.hms.repository.DoctorRepository;
+import com.shaarky.hms.repository.UserRepository;
 import com.shaarky.hms.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
     private final DepartmentRepository departmentRepository;
+    private final UserRepository userRepository;
     private final DoctorMapper doctorMapper;
 
     @Override
@@ -44,10 +47,19 @@ public class DoctorServiceImpl implements DoctorService {
 
         Department department = departmentRepository.findById(doctorRequest.getDepartmentId())
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Department not found with id: "
-                                + doctorRequest.getDepartmentId()));
+                        new ResourceNotFoundException(
+                                "Department not found with id: " + doctorRequest.getDepartmentId()));
 
-        Doctor doctor = doctorMapper.toEntity(doctorRequest, department);
+        User user = userRepository.findByIdAndDeletedFalse(doctorRequest.getUserId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found with id: " + doctorRequest.getUserId()));
+
+        Doctor doctor = doctorMapper.toEntity(
+                doctorRequest,
+                department,
+                user
+        );
 
         Doctor savedDoctor = doctorRepository.save(doctor);
 
@@ -61,7 +73,8 @@ public class DoctorServiceImpl implements DoctorService {
 
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Doctor not found with id: " + doctorId));
+                        new ResourceNotFoundException(
+                                "Doctor not found with id: " + doctorId));
 
         if (!doctor.getEmployeeId().equals(doctorRequest.getEmployeeId())
                 && doctorRepository.existsByEmployeeId(doctorRequest.getEmployeeId())) {
@@ -80,10 +93,20 @@ public class DoctorServiceImpl implements DoctorService {
 
         Department department = departmentRepository.findById(doctorRequest.getDepartmentId())
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Department not found with id: "
-                                + doctorRequest.getDepartmentId()));
+                        new ResourceNotFoundException(
+                                "Department not found with id: " + doctorRequest.getDepartmentId()));
 
-        doctorMapper.updateEntity(doctor, doctorRequest, department);
+        User user = userRepository.findByIdAndDeletedFalse(doctorRequest.getUserId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "User not found with id: " + doctorRequest.getUserId()));
+
+        doctorMapper.updateEntity(
+                doctor,
+                doctorRequest,
+                department,
+                user
+        );
 
         Doctor updatedDoctor = doctorRepository.save(doctor);
 
@@ -98,7 +121,8 @@ public class DoctorServiceImpl implements DoctorService {
 
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Doctor not found with id: " + doctorId));
+                        new ResourceNotFoundException(
+                                "Doctor not found with id: " + doctorId));
 
         return doctorMapper.toResponse(doctor);
     }
@@ -119,7 +143,8 @@ public class DoctorServiceImpl implements DoctorService {
 
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Department not found with id: " + departmentId));
+                        new ResourceNotFoundException(
+                                "Department not found with id: " + departmentId));
 
         return doctorRepository.findAllByDepartment(department)
                 .stream()
@@ -142,7 +167,8 @@ public class DoctorServiceImpl implements DoctorService {
 
         Doctor doctor = doctorRepository.findById(doctorId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Doctor not found with id: " + doctorId));
+                        new ResourceNotFoundException(
+                                "Doctor not found with id: " + doctorId));
 
         doctorRepository.delete(doctor);
 

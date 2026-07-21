@@ -15,7 +15,8 @@ public class PrescriptionMapper {
             PrescriptionRequest request,
             Appointment appointment,
             Doctor doctor,
-            Patient patient
+            Patient patient,
+            String prescriptionNumber
     ) {
 
         if (request == null) {
@@ -23,7 +24,7 @@ public class PrescriptionMapper {
         }
 
         Prescription prescription = Prescription.builder()
-                .prescriptionNumber(request.getPrescriptionNumber())
+                .prescriptionNumber(prescriptionNumber)
                 .diagnosis(request.getDiagnosis())
                 .medications(request.getMedications())
                 .instructions(request.getInstructions())
@@ -70,7 +71,6 @@ public class PrescriptionMapper {
             Patient patient
     ) {
 
-        prescription.setPrescriptionNumber(request.getPrescriptionNumber());
         prescription.assignAppointment(appointment);
         prescription.assignDoctor(doctor);
         prescription.assignPatient(patient);

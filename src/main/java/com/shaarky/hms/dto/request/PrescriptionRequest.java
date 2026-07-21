@@ -16,10 +16,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PrescriptionRequest {
 
-    @NotBlank(message = "Prescription number is required.")
-    @Size(max = 30, message = "Prescription number must not exceed 30 characters.")
-    private String prescriptionNumber;
-
     @NotNull(message = "Appointment ID is required.")
     private Long appointmentId;
 

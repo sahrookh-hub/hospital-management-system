@@ -2,6 +2,7 @@ package com.shaarky.hms.repository;
 
 import com.shaarky.hms.entity.Department;
 import com.shaarky.hms.entity.Doctor;
+import com.shaarky.hms.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,11 +18,15 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     Optional<Doctor> findByLicenseNumber(String licenseNumber);
 
+    Optional<Doctor> findByUser(User user);
+
     List<Doctor> findAllByDepartment(Department department);
 
     List<Doctor> findAllByAvailableTrue();
 
     List<Doctor> findAllByDepartmentAndAvailableTrue(Department department);
+
+    List<Doctor> findAllByOrderByFirstNameAscLastNameAsc();
 
     boolean existsByEmployeeId(String employeeId);
 
@@ -29,5 +34,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     boolean existsByLicenseNumber(String licenseNumber);
 
-    List<Doctor> findAllByOrderByFirstNameAscLastNameAsc();
+    boolean existsByUser(User user);
 }
