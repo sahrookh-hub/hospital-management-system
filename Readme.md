@@ -227,8 +227,8 @@ This project demonstrates practical experience with:
 
 **Your Name**
 
-- GitHub: https://github.com/YOUR_USERNAME
-- LinkedIn: https://linkedin.com/in/YOUR_LINKEDIN
+- GitHub: https://github.com/sahrookh-hub
+- LinkedIn: www.linkedin.com/in/sahrookh-khan0224
 
 ---
 
